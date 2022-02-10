@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+
+	<title>
+		Forecast API
+	</title>
+</head>
+
+<style>
+input[type=text], select {
+  width: 8%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size:13px},
+
+
+</style>
+
+<body bgcolor="brown">
+<center>
+<br>
+<br>
+<br>
+<h1 style="color:white;">Forecast Location Details</h1>
+<br>
+<br>
+<br>
+<p style="color:white; font-size:20px"> Enter the location latitude    <input type="text" id="latitude" > </p>
+<br>
+<br>
+<br>
+<p style="color:white; font-size:20px">Enter the location longitude    <input type="text" id="longitude" > </p>
+
+<br>
+<br>
+<br>
+
+	
+	
+	<button type="button" id="fetchBtn" style="height:300; width:20%; font-size:20px">
+		Fetch Forecast Data
+	</button>
+	
+	<br>
+<br>
+	
+	<div class="container">
+		
+		<ul style="color:white; font-size:20px" id="list"></ul>
+		<ul style="color:white; font-size:20px" id="list2"></ul>
+	</div>
+
+
+	<script>
+        let fetchBtn = document.getElementById("fetchBtn");
+		var latitude=document.getElementById("latitude").value;
+		var longitude=document.getElementById("longitude").value;
+  
+        fetchBtn.addEventListener("click", buttonclickhandler);
+  
+        function buttonclickhandler() {
+  
+            // Instantiate an new XHR Object
+            const xhr = new XMLHttpRequest();
+  
+            // Open an obejct (GET/POST, PATH,
+            // ASYN-TRUE/FALSE)
+            xhr.open("GET", "https://api.weather.gov/points/"+latitude+","+longitude, true);  
+  
+            // When response is ready
+            xhr.onload = function () {
+                if (this.status === 200) {
+  
+                    // Changing string data into JSON Object
+                    obj = JSON.parse(this.responseText);
+  
+                    // Getting the ul element
+                    let list = document.getElementById("list");
+                    str = ""
+                    str+=obj.properties.forecast;
+					
+					
+					
+					
+					
+					
+                    //list.innerHTML = str;
+					
+			const xhr2 = new XMLHttpRequest();
+  
+           
+            xhr2.open("GET",str, true);
+  
+  
+  
+            // When response is ready
+            xhr2.onload = function () {
+                if (this.status === 200) {
+  
+                    // Changing string data into JSON Object
+                    obj2 = JSON.parse(this.responseText);
+  
+                    // Getting the ul element
+                    let list2 = document.getElementById("list2");
+                    str2 = "Forecast Temperatue on "+obj2.properties.periods[3].name+" will be "+obj2.properties.periods[3].temperature+" "+obj2.properties.periods[3].temperatureUnit;
+                    
+                    list2.innerHTML = str2;
+                }
+                else {
+                    list2.innerHTML = "Please enter the correct latitude and longitude value";
+                }
+            }
+            xhr2.send();
+                }
+                else {
+                    list2.innerHTML = "Please enter the correct latitude and longitude value";
+                }
+            }
+            xhr.send();
+			
+
+			
+			
+        }
+    </script>
+
+	
+
+</body>
+
+</html>
